@@ -4,13 +4,13 @@
   "description": "A project for testing HTML files with Puppeteer",
   "main": "index.js",
   "scripts": {
-    "test": "node puppeteer-test-script.js"  // คำสั่งที่ใช้รันการทดสอบ
+    "test": "node puppeteer-test-script.js"  // คำสั่งนี้จะรันการทดสอบจากไฟล์ puppeteer-test-script.js
   },
   "dependencies": {
-    "puppeteer": "^20.0.0"  // เพิ่ม puppeteer เป็น dependencies
+    "puppeteer": "^20.0.0"  // ใช้ puppeteer สำหรับการทดสอบหน้า HTML
   },
   "devDependencies": {
-    "jest": "^29.0.0"  // ถ้าต้องการใช้ Jest หรือเครื่องมือทดสอบอื่นๆ
+    "jest": "^29.0.0"  // ถ้าคุณใช้ Jest หรือเครื่องมือทดสอบอื่นๆ
   },
   "author": "Your Name",
   "license": "ISC"
