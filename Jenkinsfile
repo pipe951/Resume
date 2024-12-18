@@ -1,60 +1,55 @@
 pipeline {
     agent any
-    
+
     environment {
-        // กำหนดตัวแปรสำหรับ Windows
-        PATH = "${tool 'JDK11'}\\bin:${env.PATH}"
+        NODE_HOME = 'C:\\Program Files\\nodejs'  // กำหนดที่อยู่ของ Node.js
+        PATH = "${env.PATH};${env.NODE_HOME}\\bin"  // เพิ่ม Node.js ไปยัง PATH
     }
 
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    // ทำการ checkout โปรเจคจาก repository
-                    checkout scm
-                }
+                // เช็คเอาท์โค้ดจาก Git repository
+                git 'https://github.com/pipe951/Resume.git'
             }
         }
-        
-        stage('Build') {
+
+        stage('Install Dependencies') {
             steps {
                 script {
-                    // คำสั่งสำหรับการ build หรือการเตรียมโปรเจค
-                    echo 'Building project...'
-                    // ตัวอย่างการรันคำสั่ง build ใน Windows (หากมีคำสั่งอื่นๆ เช่นการ compile ก็สามารถเพิ่มได้)
-                    bat 'echo Build process for Windows'
+                    // ตรวจสอบว่า npm ติดตั้งแล้วหรือไม่
+                    bat 'npm install'
                 }
             }
         }
 
-        stage('Test') {
+        stage('Run Tests') {
             steps {
                 script {
-                    // คำสั่งสำหรับทดสอบโปรเจค
-                    echo 'Running tests...'
-                    bat 'echo Test process for Windows'
-                }
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                script {
-                    // คำสั่งสำหรับการ deploy
-                    echo 'Deploying project...'
-                    bat 'echo Deployment process for Windows'
+                    // ใช้เครื่องมือทดสอบเช่น puppeteer หรือเครื่องมือทดสอบอื่นๆ ที่เหมาะสมกับ HTML
+                    bat 'npm run test'  // รันคำสั่งทดสอบที่คุณกำหนดใน package.json
                 }
             }
         }
 
-        stage('Clean Up') {
+        stage('Archive Results') {
             steps {
-                script {
-                    // คำสั่งสำหรับการ cleanup หลังการ deploy
-                    echo 'Cleaning up...'
-                    bat 'echo Cleaning process for Windows'
-                }
+                // เก็บผลลัพธ์ของการทดสอบหรือไฟล์ต่างๆ
+                archiveArtifacts allowEmptyArchive: true, artifacts: '**/test-results/**/*'
             }
+        }
+    }
+
+    post {
+        always {
+            // การทำงานหลังการทดสอบ เช่น การ Clean up หรือการแจ้งเตือน
+            echo 'Cleaning up...'
+        }
+        success {
+            echo 'Tests passed successfully.'
+        }
+        failure {
+            echo 'Tests failed.'
         }
     }
 }
