@@ -9,8 +9,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // เช็คเอาท์โค้ดจาก Git repository
-                git 'https://github.com/pipe951/Resume.git'
+                // เช็คเอาท์โค้ดจาก Git repository โดยระบุ branch 'main'
+                git branch: 'main', url: 'https://github.com/pipe951/Resume.git'
             }
         }
 
